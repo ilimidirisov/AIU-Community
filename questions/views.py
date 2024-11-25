@@ -4,8 +4,8 @@
 from rest_framework.response import Response
 from rest_framework import generics, status
 from rest_framework.views import APIView
-from .models import Question, Answer, Faculty
-from .serializers import QuestionSerializer, AnswerSerializer, FacultySerializer
+from .models import Question, Answer, Faculty, UserProfile
+from .serializers import QuestionSerializer, AnswerSerializer, FacultySerializer, UserProfileSerializer
 #APIView, #ListAPIView, CreateAPIView, DeleteAPIView
 
 class QuestionList(generics.ListCreateAPIView):
@@ -63,3 +63,17 @@ class AnswerList(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)  # Return the created answer data
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)  # Return validation errors if any
     
+class UserProfileList(generics.ListCreateAPIView):
+    """
+    Список всех профилей пользователей или создание нового профиля.
+    """
+    queryset = UserProfile.objects.all()
+    serializer_class = UserProfileSerializer
+
+class UserProfileDetail(generics.RetrieveUpdateDestroyAPIView):
+    """
+    Получение, обновление или удаление профиля пользователя по ID.
+    """
+    queryset = UserProfile.objects.all()
+    serializer_class = UserProfileSerializer
+    lookup_field = 'id'  # Идентификация профиля по его 
